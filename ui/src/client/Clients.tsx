@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
+import Copy from '@material-ui/icons/FileCopyOutlined';
 import React, {Component, SFC} from 'react';
 import ConfirmDialog from '../common/ConfirmDialog';
 import DefaultPage from '../common/DefaultPage';
@@ -61,6 +62,7 @@ class Clients extends Component<Stores<'clientStore'>> {
                                     <TableCell style={{width: 200}}>Token</TableCell>
                                     <TableCell />
                                     <TableCell />
+                                    <TableCell />
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -110,6 +112,15 @@ interface IRowProps {
     fDelete: VoidFunction;
 }
 
+const copyToClipboard = async (text: string) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        console.info("Copied to clipboard:", text);
+    } catch (error) {
+        console.error("Failed to copy:", error);
+    }
+}
+
 const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete}) => (
     <TableRow>
         <TableCell>{name}</TableCell>
@@ -118,6 +129,11 @@ const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete}) => (
                 value={value}
                 style={{display: 'flex', alignItems: 'center', width: 200}}
             />
+        </TableCell>
+        <TableCell align="right" padding="none">
+            <IconButton onClick={() => {copyToClipboard(value)}} className="copy" title="Copy to clipboard">
+                <Copy />
+            </IconButton>
         </TableCell>
         <TableCell align="right" padding="none">
             <IconButton onClick={fEdit} className="edit">
