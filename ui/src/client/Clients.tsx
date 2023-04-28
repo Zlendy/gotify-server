@@ -20,6 +20,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {inject, Stores} from '../inject';
 import {IClient} from '../types';
+import { ClientStore } from './ClientStore';
 
 @observer
 class Clients extends Component<Stores<'clientStore'>> {
@@ -73,6 +74,7 @@ class Clients extends Component<Stores<'clientStore'>> {
                                         value={client.token}
                                         fEdit={() => (this.updateId = client.id)}
                                         fDelete={() => (this.deleteId = client.id)}
+                                        clientStore={clientStore}
                                     />
                                 ))}
                             </TableBody>
@@ -110,18 +112,10 @@ interface IRowProps {
     value: string;
     fEdit: VoidFunction;
     fDelete: VoidFunction;
+    clientStore: ClientStore;
 }
 
-const copyToClipboard = async (text: string) => {
-    try {
-        await navigator.clipboard.writeText(text);
-        console.info("Copied to clipboard:", text);
-    } catch (error) {
-        console.error("Failed to copy:", error);
-    }
-}
-
-const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete}) => (
+const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, clientStore}) => (
     <TableRow>
         <TableCell>{name}</TableCell>
         <TableCell>
@@ -131,7 +125,7 @@ const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete}) => (
             />
         </TableCell>
         <TableCell align="right" padding="none">
-            <IconButton onClick={() => {copyToClipboard(value)}} className="copy" title="Copy to clipboard">
+            <IconButton onClick={ () => clientStore.copyToClipboard(value) } className="copy" title="Copy to clipboard">
                 <Copy />
             </IconButton>
         </TableCell>

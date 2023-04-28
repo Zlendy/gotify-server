@@ -38,4 +38,15 @@ export class ClientStore extends BaseStore<IClient> {
         await this.createNoNotifcation(name);
         this.snack('Client added');
     };
+
+    @action
+    public copyToClipboard = async (text: string): Promise<void> => {
+        try {
+            await navigator.clipboard.writeText(text);
+            this.snack("Copied to clipboard");
+        } catch (error) {
+            console.error("Failed to copy to clipboard:", error);
+            this.snack("Failed to copy to clipboard");
+        }
+    };
 }

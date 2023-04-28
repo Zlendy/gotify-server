@@ -17,8 +17,9 @@ afterAll(async () => await gotify.close());
 enum Col {
     Name = 1,
     Token = 2,
-    Edit = 3,
-    Delete = 4,
+    Copy = 3,
+    Edit = 4,
+    Delete = 5,
 }
 
 const hasClient =
