@@ -14,8 +14,9 @@ beforeAll(async () => {
 afterAll(async () => await gotify.close());
 
 enum Col {
-    Name = 2,
-    Token = 3,
+    Name = 1,
+    Token = 2,
+    Copy = 3,
     Description = 4,
     EditUpdate = 5,
     EditDelete = 6,

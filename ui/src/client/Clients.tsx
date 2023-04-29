@@ -20,7 +20,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {inject, Stores} from '../inject';
 import {IClient} from '../types';
-import { ClientStore } from './ClientStore';
+import {ClientStore} from './ClientStore';
 
 @observer
 class Clients extends Component<Stores<'clientStore'>> {
@@ -74,7 +74,7 @@ class Clients extends Component<Stores<'clientStore'>> {
                                         value={client.token}
                                         fEdit={() => (this.updateId = client.id)}
                                         fDelete={() => (this.deleteId = client.id)}
-                                        clientStore={clientStore}
+                                        store={clientStore}
                                     />
                                 ))}
                             </TableBody>
@@ -112,10 +112,10 @@ interface IRowProps {
     value: string;
     fEdit: VoidFunction;
     fDelete: VoidFunction;
-    clientStore: ClientStore;
+    store: ClientStore;
 }
 
-const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, clientStore}) => (
+const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, store}) => (
     <TableRow>
         <TableCell>{name}</TableCell>
         <TableCell>
@@ -125,7 +125,10 @@ const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, clientStore}) => (
             />
         </TableCell>
         <TableCell align="right" padding="none">
-            <IconButton onClick={ () => clientStore.copyToClipboard(value) } className="copy" title="Copy to clipboard">
+            <IconButton
+                onClick={() => store.copyToClipboard(value)}
+                className="copy"
+                title="Copy to clipboard">
                 <Copy />
             </IconButton>
         </TableCell>

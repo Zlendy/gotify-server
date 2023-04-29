@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
+import Copy from '@material-ui/icons/FileCopyOutlined';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import React, {ChangeEvent, Component, SFC} from 'react';
 import ConfirmDialog from '../common/ConfirmDialog';
@@ -21,6 +22,7 @@ import {inject, Stores} from '../inject';
 import * as config from '../config';
 import UpdateDialog from './UpdateApplicationDialog';
 import {IApplication} from '../types';
+import {AppStore} from './AppStore';
 
 @observer
 class Applications extends Component<Stores<'appStore'>> {
@@ -65,6 +67,7 @@ class Applications extends Component<Stores<'appStore'>> {
                                     <TableCell padding="checkbox" style={{width: 80}} />
                                     <TableCell>Name</TableCell>
                                     <TableCell>Token</TableCell>
+                                    <TableCell />
                                     <TableCell>Description</TableCell>
                                     <TableCell />
                                     <TableCell />
@@ -82,6 +85,7 @@ class Applications extends Component<Stores<'appStore'>> {
                                         fDelete={() => (this.deleteId = app.id)}
                                         fEdit={() => (this.updateId = app.id)}
                                         noDelete={app.internal}
+                                        store={appStore}
                                     />
                                 ))}
                             </TableBody>
@@ -151,10 +155,11 @@ interface IRowProps {
     image: string;
     fDelete: VoidFunction;
     fEdit: VoidFunction;
+    store: AppStore;
 }
 
 const Row: SFC<IRowProps> = observer(
-    ({name, value, noDelete, description, fDelete, fUpload, image, fEdit}) => (
+    ({name, value, noDelete, description, fDelete, fUpload, image, fEdit, store}) => (
         <TableRow>
             <TableCell padding="default">
                 <div style={{display: 'flex'}}>
@@ -168,6 +173,15 @@ const Row: SFC<IRowProps> = observer(
             <TableCell>
                 <ToggleVisibility value={value} style={{display: 'flex', alignItems: 'center'}} />
             </TableCell>
+            <TableCell>
+                <IconButton
+                    onClick={() => store.copyToClipboard(value)}
+                    className="copy"
+                    title="Copy to clipboard">
+                    <Copy />
+                </IconButton>
+            </TableCell>
+
             <TableCell>{description}</TableCell>
             <TableCell align="right" padding="none">
                 <IconButton onClick={fEdit} className="edit">

@@ -2,13 +2,16 @@ import axios from 'axios';
 import {action} from 'mobx';
 import {BaseStore} from '../common/BaseStore';
 import * as config from '../config';
-import {SnackReporter} from '../snack/SnackManager';
+import {ICopyToClipboard, SnackReporter} from '../snack/SnackManager';
 import {IPlugin} from '../types';
 
 export class PluginStore extends BaseStore<IPlugin> {
     public onDelete: () => void = () => {};
 
-    public constructor(private readonly snack: SnackReporter) {
+    public constructor(
+        private readonly snack: SnackReporter,
+        public readonly copyToClipboard: ICopyToClipboard
+    ) {
         super();
     }
 

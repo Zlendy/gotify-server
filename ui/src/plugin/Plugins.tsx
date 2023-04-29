@@ -8,12 +8,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Settings from '@material-ui/icons/Settings';
-import {Switch, Button} from '@material-ui/core';
+import Copy from '@material-ui/icons/FileCopyOutlined';
+import {Switch, Button, IconButton} from '@material-ui/core';
 import DefaultPage from '../common/DefaultPage';
 import ToggleVisibility from '../common/ToggleVisibility';
 import {observer} from 'mobx-react';
 import {inject, Stores} from '../inject';
 import {IPlugin} from '../types';
+import {PluginStore} from './PluginStore';
 
 @observer
 class Plugins extends Component<Stores<'pluginStore'>> {
@@ -35,6 +37,7 @@ class Plugins extends Component<Stores<'pluginStore'>> {
                                     <TableCell>Enabled</TableCell>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Token</TableCell>
+                                    <TableCell />
                                     <TableCell>Details</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -52,6 +55,7 @@ class Plugins extends Component<Stores<'pluginStore'>> {
                                                 !plugin.enabled
                                             )
                                         }
+                                        store={pluginStore}
                                     />
                                 ))}
                             </TableBody>
@@ -69,9 +73,10 @@ interface IRowProps {
     token: string;
     enabled: boolean;
     fToggleStatus: VoidFunction;
+    store: PluginStore;
 }
 
-const Row: SFC<IRowProps> = observer(({name, id, token, enabled, fToggleStatus}) => (
+const Row: SFC<IRowProps> = observer(({name, id, token, enabled, fToggleStatus, store}) => (
     <TableRow>
         <TableCell>{id}</TableCell>
         <TableCell>
@@ -86,6 +91,12 @@ const Row: SFC<IRowProps> = observer(({name, id, token, enabled, fToggleStatus})
         <TableCell>
             <ToggleVisibility value={token} style={{display: 'flex', alignItems: 'center'}} />
         </TableCell>
+        <IconButton
+            onClick={() => store.copyToClipboard(token)}
+            className="copy"
+            title="Copy to clipboard">
+            <Copy />
+        </IconButton>
         <TableCell align="right" padding="none">
             <Link to={'/plugins/' + id}>
                 <Button>

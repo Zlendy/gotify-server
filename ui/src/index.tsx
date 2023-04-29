@@ -28,13 +28,13 @@ const prodUrl = urlWithSlash;
 
 const initStores = (): StoreMapping => {
     const snackManager = new SnackManager();
-    const appStore = new AppStore(snackManager.snack);
+    const appStore = new AppStore(snackManager.snack, snackManager.copyToClipboard);
     const userStore = new UserStore(snackManager.snack);
     const messagesStore = new MessagesStore(appStore, snackManager.snack);
     const currentUser = new CurrentUser(snackManager.snack);
-    const clientStore = new ClientStore(snackManager.snack);
+    const clientStore = new ClientStore(snackManager.snack, snackManager.copyToClipboard);
     const wsStore = new WebSocketStore(snackManager.snack, currentUser);
-    const pluginStore = new PluginStore(snackManager.snack);
+    const pluginStore = new PluginStore(snackManager.snack, snackManager.copyToClipboard);
     appStore.onDelete = () => messagesStore.clearAll();
 
     return {

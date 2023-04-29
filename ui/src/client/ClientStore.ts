@@ -2,11 +2,14 @@ import {BaseStore} from '../common/BaseStore';
 import axios from 'axios';
 import * as config from '../config';
 import {action} from 'mobx';
-import {SnackReporter} from '../snack/SnackManager';
+import {ICopyToClipboard, SnackReporter} from '../snack/SnackManager';
 import {IClient} from '../types';
 
 export class ClientStore extends BaseStore<IClient> {
-    public constructor(private readonly snack: SnackReporter) {
+    public constructor(
+        private readonly snack: SnackReporter,
+        public readonly copyToClipboard: ICopyToClipboard
+    ) {
         super();
     }
 
@@ -37,16 +40,5 @@ export class ClientStore extends BaseStore<IClient> {
     public create = async (name: string): Promise<void> => {
         await this.createNoNotifcation(name);
         this.snack('Client added');
-    };
-
-    @action
-    public copyToClipboard = async (text: string): Promise<void> => {
-        try {
-            await navigator.clipboard.writeText(text);
-            this.snack("Copied to clipboard");
-        } catch (error) {
-            console.error("Failed to copy to clipboard:", error);
-            this.snack("Failed to copy to clipboard");
-        }
     };
 }

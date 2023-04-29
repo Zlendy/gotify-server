@@ -2,13 +2,16 @@ import {BaseStore} from '../common/BaseStore';
 import axios from 'axios';
 import * as config from '../config';
 import {action} from 'mobx';
-import {SnackReporter} from '../snack/SnackManager';
+import {ICopyToClipboard, SnackReporter} from '../snack/SnackManager';
 import {IApplication} from '../types';
 
 export class AppStore extends BaseStore<IApplication> {
     public onDelete: () => void = () => {};
 
-    public constructor(private readonly snack: SnackReporter) {
+    public constructor(
+        private readonly snack: SnackReporter,
+        public readonly copyToClipboard: ICopyToClipboard
+    ) {
         super();
     }
 
