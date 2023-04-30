@@ -91,12 +91,14 @@ const Row: SFC<IRowProps> = observer(({name, id, token, enabled, fToggleStatus, 
         <TableCell>
             <ToggleVisibility value={token} style={{display: 'flex', alignItems: 'center'}} />
         </TableCell>
-        <IconButton
-            onClick={() => store.copyToClipboard(token)}
-            className="copy"
-            title="Copy to clipboard">
-            <Copy />
-        </IconButton>
+        <TableCell align="right" padding="none">
+            <IconButton
+                onClick={() => store.copyToClipboard(token)}
+                className="copy"
+                title="Copy to clipboard">
+                <Copy />
+            </IconButton>
+        </TableCell>
         <TableCell align="right" padding="none">
             <Link to={'/plugins/' + id}>
                 <Button>

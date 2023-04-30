@@ -181,7 +181,6 @@ const Row: SFC<IRowProps> = observer(
                     <Copy />
                 </IconButton>
             </TableCell>
-
             <TableCell>{description}</TableCell>
             <TableCell align="right" padding="none">
                 <IconButton onClick={fEdit} className="edit">
