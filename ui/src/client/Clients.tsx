@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
-import Copy from '@material-ui/icons/FileCopyOutlined';
 import React, {Component, SFC} from 'react';
 import ConfirmDialog from '../common/ConfirmDialog';
 import DefaultPage from '../common/DefaultPage';
@@ -20,10 +19,10 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {inject, Stores} from '../inject';
 import {IClient} from '../types';
-import {ClientStore} from './ClientStore';
+import CopyToClipboard from '../common/CopyToClipboard';
 
 @observer
-class Clients extends Component<Stores<'clientStore'>> {
+class Clients extends Component<Stores<'clientStore'  >> {
     @observable
     private showDialog = false;
     @observable
@@ -38,7 +37,7 @@ class Clients extends Component<Stores<'clientStore'>> {
             deleteId,
             updateId,
             showDialog,
-            props: {clientStore},
+            props: {clientStore },
         } = this;
         const clients = clientStore.getItems();
 
@@ -74,7 +73,6 @@ class Clients extends Component<Stores<'clientStore'>> {
                                         value={client.token}
                                         fEdit={() => (this.updateId = client.id)}
                                         fDelete={() => (this.deleteId = client.id)}
-                                        store={clientStore}
                                     />
                                 ))}
                             </TableBody>
@@ -112,10 +110,9 @@ interface IRowProps {
     value: string;
     fEdit: VoidFunction;
     fDelete: VoidFunction;
-    store: ClientStore;
 }
 
-const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, store}) => (
+const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete}) => (
     <TableRow>
         <TableCell>{name}</TableCell>
         <TableCell>
@@ -125,12 +122,7 @@ const Row: SFC<IRowProps> = ({name, value, fEdit, fDelete, store}) => (
             />
         </TableCell>
         <TableCell align="right" padding="none">
-            <IconButton
-                onClick={() => store.copyToClipboard(value)}
-                className="copy"
-                title="Copy to clipboard">
-                <Copy />
-            </IconButton>
+            <CopyToClipboard content={value}/>
         </TableCell>
         <TableCell align="right" padding="none">
             <IconButton onClick={fEdit} className="edit">
